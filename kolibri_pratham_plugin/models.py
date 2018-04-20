@@ -5,7 +5,7 @@ from kolibri.auth.models import AbstractFacilityDataModel
 from kolibri.auth.models import Facility
 
 class DataStore(AbstractFacilityDataModel):
-    morango_model_name = "exam"
+    morango_model_name = "datastore"
 
     data = JSONField(default={}, blank=True)
     facility = ForeignKey(Facility)
