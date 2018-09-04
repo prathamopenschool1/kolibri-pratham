@@ -1,9 +1,10 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from pip._vendor.html5lib import filters
-from rest_framework import viewsets
+from rest_framework import pagination, permissions, viewsets
 
 from kolibri.auth.api import KolibriAuthPermissionsFilter
+from kolibri.plugins.coach.api import OptionalPageNumberPagination
 
 from .models import DataStore
 from .serializers import DataStoreSerializer
@@ -16,6 +17,8 @@ class DataStoreViewset(viewsets.ModelViewSet):
     filter_backends = (KolibriAuthPermissionsFilter, DjangoFilterBackend, SearchFilter,)
     queryset = DataStore.objects.all()#raw('SELECT * FROM DataStore where filter_name = %s', [filter_name])
     filter_fields = ('filter_name', 'table_name')
+    #permission_classes = (KolibriReportPermissions,)
+    pagination_class = OptionalPageNumberPagination
     #search_fields = ('^filter_name', '^table_name')
     #result = DataStore.objects.filter(filter_fields__icontains='filter_name')
 
