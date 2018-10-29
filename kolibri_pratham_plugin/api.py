@@ -53,33 +53,34 @@ class DataStoreViewset(viewsets.ModelViewSet):
         save_in_folder()
 
         def show_data():
-            device_id = serializer.data['data']['metadata']['DeviceId']
-            serial_id = serializer.data['data']['metadata']['SerialID']
-            app_name = serializer.data['data']['metadata']['appName']
-            apk_version = serializer.data['data']['metadata']['apkVersion']
-            score_count = serializer.data['data']['metadata']['ScoreCount']
-            pratham_code = serializer.data['data']['metadata']['prathamCode']
+            if serializer.data['table_name'] == 'USAGEDATA':
+                device_id = serializer.data['data']['metadata']['DeviceId']
+                serial_id = serializer.data['data']['metadata']['SerialID']
+                app_name = serializer.data['data']['metadata']['appName']
+                apk_version = serializer.data['data']['metadata']['apkVersion']
+                score_count = serializer.data['data']['metadata']['ScoreCount']
+                pratham_code = serializer.data['data']['metadata']['prathamCode']
 
-            now = datetime.datetime.now()
+                now = datetime.datetime.now()
 
-            view_to_crl = {
-                            "device_id": str(device_id).encode("ascii","replace"),
-                            "serial_id": serial_id.encode("ascii","replace"),
-                            "app_name": app_name.encode("ascii","replace"), 
-                            "apk_version": apk_version.encode("ascii","replace"),
-                            "score_count": score_count,
-                            "pratham_code": pratham_code.encode("ascii","replace"),
-                            "date": now.strftime("%Y-%m-%d %H:%M:%S")
-                          }
-            
-            view_to_crl = str(view_to_crl).encode("ascii","replace")
+                view_to_crl = {
+                                "device_id": str(device_id).encode("ascii","replace"),
+                                "serial_id": serial_id.encode("ascii","replace"),
+                                "app_name": app_name.encode("ascii","replace"), 
+                                "apk_version": apk_version.encode("ascii","replace"),
+                                "score_count": score_count,
+                                "pratham_code": pratham_code.encode("ascii","replace"),
+                                "date": now.strftime("%Y-%m-%d %H:%M:%S")
+                              }
+                
+                view_to_crl = str(view_to_crl).encode("ascii","replace")
 
-            try:
-                with open(os.path.join("/opt/PIHDD/KOLIBRI_DATA/content/storage/pdata/AutoSummaryBackup", 'score_data.json'), "a") as newfile:
-                    newfile.writelines(view_to_crl+",")
-                    newfile.write("\n")
-            except Exception as e:
-                print(e)
+                try:
+                    with open(os.path.join("/opt/PIHDD/KOLIBRI_DATA/content/storage/pdata/AutoSummaryBackup", 'score_data.json'), "a") as newfile:
+                        newfile.writelines(view_to_crl+",")
+                        newfile.write("\n")
+                except Exception as e:
+                    print(e)
 
         show_data()
                 
