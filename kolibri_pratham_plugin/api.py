@@ -29,7 +29,7 @@ class DataStoreViewset(viewsets.ModelViewSet):
     queryset = DataStore.objects.all()
     serializer_class = DataStoreSerializer
     filter_fields = ('filter_name', 'table_name')
-    #permission_classes = (KolibriReportPermissions,)
+    # permission_classes = (KolibriReportPermissions,)
     pagination_class = OptionalPageNumberPagination
 
     def create(self, request, *args, **kwargs):
@@ -45,7 +45,8 @@ class DataStoreViewset(viewsets.ModelViewSet):
         def save_in_folder():
             if serializer.data['table_name'] == 'USAGEDATA':
                 randstr = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(N))
-                with open(os.path.join("/opt/PIHDD/KOLIBRI_DATA/content/storage/pdata/AutoDataBackup", randstr+str(datetime.datetime.now())+'.json'), "w+") as outfile:
+                with open(os.path.join("/opt/PIHDD/KOLIBRI_DATA/content/storage/pdata/AutoDataBackup",
+                                       randstr+str(datetime.datetime.now())+'.json'), "w+") as outfile:
                     json.dump(self.request.data, outfile, indent=4, sort_keys=True)
             else:
                 pass
@@ -60,6 +61,7 @@ class DataStoreViewset(viewsets.ModelViewSet):
                 apk_version = serializer.data['data']['metadata']['apkVersion']
                 score_count = serializer.data['data']['metadata']['ScoreCount']
                 pratham_code = serializer.data['data']['metadata']['prathamCode']
+                device_name = serializer.data['data']['metadata']['DeviceName']
 
                 now = datetime.datetime.now()
 
@@ -70,13 +72,15 @@ class DataStoreViewset(viewsets.ModelViewSet):
                                 "apk_version": apk_version.encode("ascii","replace"),
                                 "score_count": score_count,
                                 "pratham_code": pratham_code.encode("ascii","replace"),
+                                "device_name": device_name.encode("ascii", "replace"),
                                 "date": now.strftime("%Y-%m-%d %H:%M:%S")
                               }
                 
                 view_to_crl = str(view_to_crl).encode("ascii","replace")
 
                 try:
-                    with open(os.path.join("/opt/PIHDD/KOLIBRI_DATA/content/storage/pdata/AutoSummaryBackup", 'score_data.json'), "a") as newfile:
+                    with open(os.path.join("/opt/PIHDD/KOLIBRI_DATA/content/storage/pdata/AutoSummaryBackup",
+                                           'score_data.json'), "a") as newfile:
                         newfile.writelines(view_to_crl+",")
                         newfile.write("\n")
                 except Exception as e:
@@ -94,8 +98,9 @@ class DataStoreViewset(viewsets.ModelViewSet):
     #     if self.table_name is not None:
     #         self.queryset = self.queryset.filter(table_name__iexact=self.table_name)
     #     elif self.filter_name and self.table_name:
-    #         self.queryset = self.queryset.filter(filter_name__iexact=self.filter_name, table_name__iexact=self.table_name)
+    #         self.queryset = self.queryset.filter(filter_name__iexact=self.filter_name,
+    #         table_name__iexact=self.table_name)
 
     #     print(self.table_name)
 
-    #     return self.queryset
+    #     return self.
