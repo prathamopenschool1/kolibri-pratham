@@ -102,39 +102,39 @@ class DataStoreViewset(viewsets.ModelViewSet):
                     except Exception as e:
                         print(e)
 
-                else:
-                    if serializer.data['table_name'] == 'USAGEDATA':
-                        device_id = serializer.data['data']['metadata']['DeviceId']
-                        serial_id = serializer.data['data']['metadata']['SerialID']
-                        app_name = serializer.data['data']['metadata']['appName']
-                        apk_version = serializer.data['data']['metadata']['apkVersion']
-                        score_count = serializer.data['data']['metadata']['ScoreCount']
-                        pratham_code = serializer.data['data']['metadata']['prathamCode']
-                        device_name = serializer.data['data']['metadata']['DeviceName']
+            else:
+                if serializer.data['table_name'] == 'USAGEDATA':
+                    device_id = serializer.data['data']['metadata']['DeviceId']
+                    serial_id = serializer.data['data']['metadata']['SerialID']
+                    app_name = serializer.data['data']['metadata']['appName']
+                    apk_version = serializer.data['data']['metadata']['apkVersion']
+                    score_count = serializer.data['data']['metadata']['ScoreCount']
+                    pratham_code = serializer.data['data']['metadata']['prathamCode']
+                    device_name = serializer.data['data']['metadata']['DeviceName']
 
-                        now = datetime.datetime.now()
+                    now = datetime.datetime.now()
 
-                        view_to_crl = {
-                                        "device_id": str(device_id).encode("ascii", "replace").decode(),
-                                        "serial_id": serial_id.encode("ascii", "replace").decode(),
-                                        "app_name": app_name.encode("ascii", "replace").decode(),
-                                        "apk_version": apk_version.encode("ascii", "replace").decode(),
-                                        "score_count": score_count,
-                                        "pratham_code": pratham_code.encode("ascii", "replace").decode(),
-                                        "device_name": device_name.encode("ascii", "replace").decode(),
-                                        "date": now.strftime("%Y-%m-%d %H:%M:%S")
-                                      }
+                    view_to_crl = {
+                        "device_id": str(device_id).encode("ascii", "replace").decode(),
+                        "serial_id": serial_id.encode("ascii", "replace").decode(),
+                        "app_name": app_name.encode("ascii", "replace").decode(),
+                        "apk_version": apk_version.encode("ascii", "replace").decode(),
+                        "score_count": score_count,
+                        "pratham_code": pratham_code.encode("ascii", "replace").decode(),
+                        "device_name": device_name.encode("ascii", "replace").decode(),
+                        "date": now.strftime("%Y-%m-%d %H:%M:%S")
+                    }
 
-                        view_to_crl = str(view_to_crl).encode("ascii", "replace").decode()
+                    view_to_crl = str(view_to_crl).encode("ascii", "replace").decode()
 
-                        # print(view_to_crl)
+                    # print(view_to_crl)
 
-                        try:
-                            with open(os.path.join(homeDir, 'score_data.json'), "a") as newfile:
-                                newfile.writelines(view_to_crl.encode().decode()+",")
-                                newfile.write("\n")
-                        except Exception as e:
-                            print(e)
+                    try:
+                        with open(os.path.join(homeDir, 'score_data.json'), "a") as newfile:
+                            newfile.writelines(view_to_crl.encode().decode() + ",")
+                            newfile.write("\n")
+                    except Exception as e:
+                        print(e)
 
         show_data()
 
